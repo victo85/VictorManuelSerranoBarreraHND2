@@ -25,7 +25,7 @@ public class AjustesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ajustes, container, false);
+        return inflater.inflate(R.layout.fragment_ajustes, container, false); //Inflate: Método que se utiliza para construir y añadir las Views a los diseños
     }
 
 

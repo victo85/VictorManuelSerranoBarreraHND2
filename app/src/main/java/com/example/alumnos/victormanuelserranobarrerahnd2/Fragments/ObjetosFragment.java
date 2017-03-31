@@ -61,15 +61,15 @@ import java.util.ArrayList;
 
         }
 
-        public static com.example.alumnos.victormanuelserranobarrerahnd2.Fragments.ObjetosFragment newInstance() {
-            return new com.example.alumnos.victormanuelserranobarrerahnd2.Fragments.ObjetosFragment();
+        public static ObjetosFragment newInstance() {//New instance: lo que nos permite inicializar y configurar una nuevo Fragment sin tener que llamar a su constructor y métodos setter adicionales.
+            return new ObjetosFragment();
 
         }
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             ObjetosBean objetosBean = objetos.get(i);
-            Intent intent = new Intent(getActivity(), ObjetosActivity.class);
+            Intent intent = new Intent(getActivity(), ObjetosActivity.class);//Un Intent es un objeto que proporciona enlace de tiempo de ejecución entre componentes separados (como dos actividades).
             intent.putExtra(OBJETOS_KEY, objetosBean);
             startActivity(intent);
         }
