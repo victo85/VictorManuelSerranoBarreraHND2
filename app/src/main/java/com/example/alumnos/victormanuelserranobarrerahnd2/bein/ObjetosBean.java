@@ -2,26 +2,28 @@ package com.example.alumnos.victormanuelserranobarrerahnd2.bein;
 
 import java.io.Serializable;
 
-/**
- * Created by ALUMNOS on 10/03/2017.
- */
 
-public class ObjetosBean  implements Serializable{
-    private int image;
+public class ObjetosBean implements Serializable{
+
+    private int imagenObjetos;
     private String nombre, descripcion;
 
-    public ObjetosBean(int image, String nombre, String descripcion) {
-        this.image = image;
+    public ObjetosBean() {
+
+    }
+
+    public ObjetosBean(int imagenObjeto, String nombre, String descripcion) {
+        this.imagenObjetos = imagenObjeto;
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
 
-    public int getImage() {
-        return image;
+    public int getImagenObjetos() {
+        return imagenObjetos;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setImagenObjetos(int imagenObjeto) {
+        this.imagenObjetos = imagenObjeto;
     }
 
     public String getNombre() {

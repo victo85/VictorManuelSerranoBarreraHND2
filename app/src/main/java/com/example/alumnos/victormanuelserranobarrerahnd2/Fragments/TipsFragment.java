@@ -3,6 +3,7 @@ package com.example.alumnos.victormanuelserranobarrerahnd2.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.example.alumnos.victormanuelserranobarrerahnd2.API.ApiTips;
 import com.example.alumnos.victormanuelserranobarrerahnd2.Adapter.ObjetosAdapter;
 import com.example.alumnos.victormanuelserranobarrerahnd2.Adapter.TipsAdapter;
 import com.example.alumnos.victormanuelserranobarrerahnd2.Modelo2;
 import com.example.alumnos.victormanuelserranobarrerahnd2.Modelo3;
-import com.example.alumnos.victormanuelserranobarrerahnd2.ObjetosActivity;
 import com.example.alumnos.victormanuelserranobarrerahnd2.R;
 import com.example.alumnos.victormanuelserranobarrerahnd2.TipsActivity;
 import com.example.alumnos.victormanuelserranobarrerahnd2.bein.ObjetosBean;
@@ -73,5 +76,30 @@ import java.util.ArrayList;
             Intent intent = new Intent(getActivity(), TipsActivity.class);
             intent.putExtra(TIPS_KEY, tipsBean);
             startActivity(intent);
+        }
+        private class Hilo extends AsyncTask<Void, Void, ArrayList<TipsBean>> {
+
+            @Override
+            protected ArrayList<TipsBean> doInBackground(Void... voids) {
+                ApiTips apiTips = new ApiTips();
+                return apiTips.getTips();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<TipsBean> tipsBeen) {
+                super.onPostExecute(tipsBeen);
+
+                if(tipsBeen != null) {
+                    tips.clear();
+                    tips.addAll(tipsBeen);
+
+                    TipsAdapter adapter = (TipsAdapter) listTips.getAdapter();
+                    adapter.notifyDataSetChanged();
+                }else{
+                    Toast.makeText(getActivity(),
+                            "No se ha realizado la petición",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }

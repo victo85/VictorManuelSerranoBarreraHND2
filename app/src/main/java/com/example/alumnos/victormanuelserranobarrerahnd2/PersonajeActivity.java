@@ -1,6 +1,7 @@
 package com.example.alumnos.victormanuelserranobarrerahnd2;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.alumnos.victormanuelserranobarrerahnd2.API.ApiPersonajes;
 import com.example.alumnos.victormanuelserranobarrerahnd2.bein.PersonajesBean;
 import com.example.alumnos.victormanuelserranobarrerahnd2.bein.UsuarioBean;
 
@@ -34,6 +37,8 @@ private ImageView img;
         textoCompartir=personajesBean.getDescripcion();
         caracteristicas.setText(personajesBean.getCaracteristicas());
         img.setImageDrawable(ContextCompat.getDrawable(this,personajesBean.getImage()));
+        Hilo hilo = new Hilo();
+        hilo.execute();
     }
     @Override
     public void onClick(View v) {
@@ -46,6 +51,40 @@ private ImageView img;
                 break;
 
         }
+
     }
+    private class Hilo extends AsyncTask<Integer, Void, PersonajesBean> {
+
+        @Override
+        protected PersonajesBean doInBackground(Integer... args) {
+
+            int id = args[0];
+            ApiPersonajes apiPersonajes = new ApiPersonajes();
+            PersonajesBean personajesBean = apiPersonajes.getPersonaje(id);
+
+            return personajesBean;
+        }
+
+        @Override
+        protected void onPostExecute(PersonajesBean personajeBean) {
+            super.onPostExecute(personajeBean);
+
+            if(personajeBean == null){
+
+                Toast.makeText(PersonajeActivity.this, "No se pudo realizar la petición", Toast.LENGTH_SHORT).show();
+
+            }else{
+
+                nombre.setText(personajeBean.getNombre());
+                descripcion.setText(personajeBean.getDescripcion());
+                caracteristicas.setText(personajeBean.getCaracteristicas());
+                img.setImageDrawable(ContextCompat.getDrawable(PersonajeActivity.this,personajeBean.getImage()));
+
+            }
+
+        }
+    }
+
 }
+
 

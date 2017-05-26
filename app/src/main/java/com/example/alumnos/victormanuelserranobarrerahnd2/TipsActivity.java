@@ -1,6 +1,7 @@
 package com.example.alumnos.victormanuelserranobarrerahnd2;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.alumnos.victormanuelserranobarrerahnd2.API.ApiTips;
 import com.example.alumnos.victormanuelserranobarrerahnd2.bein.ObjetosBean;
 import com.example.alumnos.victormanuelserranobarrerahnd2.bein.TipsBean;
 
@@ -30,6 +33,9 @@ public class TipsActivity extends AppCompatActivity  implements View.OnClickList
             textoCompartir=tipsBean.getDescripcion();
             nombre.setText(tipsBean.getNombre());
             descripcion.setText(tipsBean.getDescripcion());
+            Hilo hilo = new Hilo();
+            hilo.execute();
+
 
         }
     @Override
@@ -44,4 +50,33 @@ public class TipsActivity extends AppCompatActivity  implements View.OnClickList
 
         }
     }
+    private class Hilo extends AsyncTask<Integer, Void, TipsBean> {
+
+        @Override
+        protected TipsBean doInBackground(Integer... args) {
+
+            int id = args[0];
+            ApiTips apiTips = new ApiTips();
+            TipsBean tipsBean = apiTips.getTip(id);
+
+            return tipsBean;
+        }
+
+        @Override
+        protected void onPostExecute(TipsBean tipsBean) {
+            super.onPostExecute(tipsBean);
+
+            if(tipsBean == null){
+
+                Toast.makeText(TipsActivity.this, "No se pudo realizar la petición", Toast.LENGTH_SHORT).show();
+
+            }else{
+
+                nombre.setText(tipsBean.getNombre());
+                descripcion.setText(tipsBean.getDescripcion());
+
+            }
+        }
     }
+}
+

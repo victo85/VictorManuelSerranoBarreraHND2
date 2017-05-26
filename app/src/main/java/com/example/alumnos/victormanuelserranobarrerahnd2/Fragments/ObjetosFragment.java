@@ -3,6 +3,7 @@ package com.example.alumnos.victormanuelserranobarrerahnd2.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.alumnos.victormanuelserranobarrerahnd2.API.ApiObjetos;
+import com.example.alumnos.victormanuelserranobarrerahnd2.API.ApiPersonajes;
 import com.example.alumnos.victormanuelserranobarrerahnd2.Adapter.ObjetosAdapter;
 import com.example.alumnos.victormanuelserranobarrerahnd2.Adapter.PersonajesAdapter;
 import com.example.alumnos.victormanuelserranobarrerahnd2.Modelo;
@@ -73,4 +77,32 @@ import java.util.ArrayList;
             intent.putExtra(OBJETOS_KEY, objetosBean);
             startActivity(intent);
         }
+        private class Hilo extends AsyncTask<Void, Void, ArrayList<ObjetosBean>> {
+
+            @Override
+            protected ArrayList<ObjetosBean> doInBackground(Void... voids) {
+                ApiObjetos apiObjetos = new ApiObjetos();
+                return apiObjetos.getObjetos();
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<ObjetosBean> objetosBeen) {
+                super.onPostExecute(objetosBeen);
+
+                if(objetosBeen != null) {
+                    objetos.clear();
+                    objetos.addAll(objetosBeen);
+
+                    ObjetosAdapter adapter = (ObjetosAdapter) listobjetos.getAdapter();
+                    adapter.notifyDataSetChanged();
+                }else{
+                    Toast.makeText(getActivity(),
+                            "No se ha realizado la petición",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
+
+
+
